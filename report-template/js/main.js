@@ -135,7 +135,7 @@ var initializers = {
                 $(this).removeClass('active');
             });
         };
-        $('.spec-filter, #pie-chart path.shadow').click(function() {
+        $('.spec-filter').click(function() {
             resetState();
             var status = $(this).data('status');
             sessionStorage.FilterStatus = status;
@@ -229,6 +229,7 @@ var initializers = {
         new Clipboard('.clipboard-btn');
     },
     "drawPieChart": function() {
+      if($("#pie-chart").length){
         var results = $("#pie-chart").data("results").split(",").map(Number);
         var total = Number($("#pie-chart").data("total"));
         var paths = $("#pie-chart path.status")
@@ -237,12 +238,13 @@ var initializers = {
             coveredAngle = startAngle + results[i] * 360 / total;
             if (total === results[i])
                 coveredAngle -= 0.05;
-            $(paths[i]).attr('d', describeArc(100, 75, 72, startAngle, coveredAngle));
+            $(paths[i]).attr('d', describeArc(100, 75, 68, startAngle, coveredAngle));
             $(paths[i]).next('path.shadow').attr('d', describeArc(100, 75, 75, startAngle, coveredAngle));
             if (results[i] === 0 || total === results[i])
                 $(paths[i]).attr('stroke-width', 0);
             startAngle = coveredAngle;
         }
+      }
     }
 };
 

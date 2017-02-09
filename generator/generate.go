@@ -208,6 +208,7 @@ var templates = []string{bodyFooterTag, reportOverviewTag, sidebarDiv, congratsD
 	specsStartDiv, specsItemsContainerDiv, specsItemsContentsDiv, specHeaderStartTag, scenarioContainerStartDiv, scenarioHeaderStartDiv, specCommentsAndTableTag,
 	htmlPageStartTag, headerEndTag, mainEndTag, endDiv, conceptStartDiv, stepStartDiv, stepMetaDiv, stepBodyDiv, stepFailureDiv, stepEndDiv, conceptSpan,
 	contextOrTeardownStartDiv, commentSpan, conceptStepsStartDiv, nestedConceptDiv, htmlPageEndWithJS, specErrorDiv,
+  endAside, reportOverviewStartTag, specOverviewStartTag,
 }
 
 func init() {
@@ -250,7 +251,7 @@ func GenerateReports(suiteRes *gm.ProtoSuiteResult, reportDir string) error {
 	}
 	if suiteRes.GetPreHookFailure() != nil {
 		overview := toOverview(suiteRes, nil)
-		generateOverview(overview, f)
+		generateOverview(overview, f, suiteRes)
 		execTemplate(hookFailureDiv, f, toHookFailure(suiteRes.GetPreHookFailure(), "Before Suite"))
 		if suiteRes.GetPostHookFailure() != nil {
 			execTemplate(hookFailureDiv, f, toHookFailure(suiteRes.GetPostHookFailure(), "After Suite"))
@@ -360,15 +361,12 @@ func generateSearchIndex(suiteRes *gm.ProtoSuiteResult, reportDir string) error 
 func generateIndexPage(suiteRes *gm.ProtoSuiteResult, w io.Writer, wg *sync.WaitGroup) {
 	defer wg.Done()
 	overview := toOverview(suiteRes, nil)
-	generateOverview(overview, w)
+	generateOverview(overview, w, suiteRes)
 	if suiteRes.GetPostHookFailure() != nil {
 		execTemplate(hookFailureDiv, w, toHookFailure(suiteRes.GetPostHookFailure(), "After Suite"))
 	}
 	execTemplate(specsStartDiv, w, nil)
 	execTemplate(sidebarDiv, w, toSidebar(suiteRes, nil))
-	if !suiteRes.GetFailed() {
-		execTemplate(congratsDiv, w, nil)
-	}
 	execTemplate(endDiv, w, nil)
 	generatePageFooter(overview, w)
 }
@@ -377,7 +375,9 @@ func generateSpecPage(suiteRes *gm.ProtoSuiteResult, specRes *gm.ProtoSpecResult
 	defer wg.Done()
 	overview := toOverview(suiteRes, specRes)
 
-	generateOverview(overview, w)
+	//generateOverview(overview, w, suiteRes)
+  execTemplate(htmlPageStartTag, w, overview)
+  execTemplate(specOverviewStartTag, w, overview)
 
 	if suiteRes.GetPreHookFailure() != nil {
 		execTemplate(hookFailureDiv, w, toHookFailure(suiteRes.GetPreHookFailure(), "Before Suite"))
@@ -388,17 +388,24 @@ func generateSpecPage(suiteRes *gm.ProtoSuiteResult, specRes *gm.ProtoSpecResult
 	}
 
 	if suiteRes.GetPreHookFailure() == nil {
-		execTemplate(specsStartDiv, w, nil)
-		execTemplate(sidebarDiv, w, toSidebar(suiteRes, specRes))
-		generateSpecDiv(w, specRes)
-		execTemplate(endDiv, w, nil)
-	}
+    generateSpecDiv(w, specRes)
+  }
+  execTemplate(endDiv, w, overview)
+  execTemplate(endAside, w, overview)
+	execTemplate(specsStartDiv, w, nil)
+	execTemplate(sidebarDiv, w, toSidebar(suiteRes, specRes))
+	execTemplate(endDiv, w, nil)
 	generatePageFooter(overview, w)
 }
 
-func generateOverview(overview *overview, w io.Writer) {
+func generateOverview(overview *overview, w io.Writer, suiteRes *gm.ProtoSuiteResult) {
 	execTemplate(htmlPageStartTag, w, overview)
+  execTemplate(reportOverviewStartTag, w, overview)
+  if !suiteRes.GetFailed() {
+		execTemplate(congratsDiv, w, nil)
+	}
 	execTemplate(reportOverviewTag, w, overview)
+  execTemplate(endAside, w, overview)
 }
 
 func generatePageFooter(overview *overview, w io.Writer) {
