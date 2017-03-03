@@ -25,25 +25,24 @@ body {
     padding: 0;
     outline: 0;
     background: #ebebeb;
+  	line-height: 1em;
 }
 h1,h2,h3,h4,h5,h6{
   margin: 10px 0;
 }
 .header{
   background: #ecc31c;
-  line-height: 1em;
 }
+
 .logo, .project{
   width: 100%;
   display: inline-block;
   vertical-align: middle;
-  padding: 10px;
-  margin: 0;
 }
 .footer{
   text-align: center;
-  background: #CCC;
-  padding: 10px;
+  background: #ccc;
+
   font-size: 0.8em;
   position: fixed;
   bottom: 0px;
@@ -65,14 +64,16 @@ h1,h2,h3,h4,h5,h6{
 .report{
   padding: 10px;
 }
-.filtersSearch{
-  padding: 10px;
+.logo, .project, .footer, .filtersSearch{
+	padding: 10px;
+}
+.searchbar, .filter{
+  margin: 10px 20px;
 }
 .searchbar{
   text-align: center;
   position: relative;
   color: #FFF;
-  margin: 10px 20px;
 }
 input, .clipboard-btn{
     padding: 5px;
@@ -92,7 +93,6 @@ input, .clipboard-btn{
 }
 
 .filter{
-  margin: 10px 20px;
   display: flex;
   color: #000;
 }
@@ -193,7 +193,7 @@ input, .clipboard-btn{
   border-left: 5px solid #CCC;
 }
 
-.time{
+.senarios .time{
   float: right;
 }
 .box{
@@ -223,7 +223,7 @@ input, .clipboard-btn{
   margin-bottom: 0px;
 }
 #specItemsContainer{
-  padding: 10px;
+  padding: 10px 20px;
   margin-bottom: 48px;
 }
 .spec_test_results{
@@ -244,6 +244,169 @@ input, .clipboard-btn{
 }
 .specTime{
   line-height: 32px;
+}
+
+.scenario-container {
+    margin: 20px 0;
+    position: relative;
+    padding-bottom: 1px;
+}
+
+.scenario-container.passed:before {
+    content: "";
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #27caa9;
+    display: block;
+    position: absolute;
+}
+
+.scenario-container.failed:before {
+    content: "";
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #e73e48;
+    display: block;
+    position: absolute;
+}
+
+.scenario-container.skipped:before {
+    content: "";
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #a1a1a1;
+    display: block;
+    position: absolute;
+}
+
+.scenario-container .passed {
+    position: relative;
+}
+
+.scenario-container .passed:before {
+    content: "";
+    width: 5px;
+    height: 100%;
+    background: #27caa9;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.scenario-container .passed ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.scenario-container .failed {
+    position: relative;
+}
+
+.scenario-container .failed:before {
+    content: "";
+    width: 5px;
+    height: 100%;
+    background: #e73e48;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.scenario-container .not-executed {
+    border-left: 5px solid #a1a1a1;
+    margin-top: 20px;
+}
+
+.scenario-container .not-executed .step {
+    color: #a1a1a1;
+}
+
+.scenario-head {
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+.scenario-head .head {
+	margin: 0px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.scenario-head .time {
+    display: inline-block;
+    font-size: 0.8rem;
+    color: #999999;
+}
+
+.scenario-head .tags {
+    margin: 0 0 10px 0;
+}
+
+.step {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    color: #333333;
+}
+
+.step ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.step li {
+    padding: 0.5rem;
+    border: 1px solid #cccccc;
+    margin-bottom: 10px;
+}
+
+.step li:last-child {
+    margin-bottom: 0;
+}
+.step li:first-child {
+    margin-top: 10px;
+}
+
+.step li.pass {
+    border-left: 5px solid #27caa9;
+}
+
+.step li.fail {
+    border-left: 5px solid #e73e48;
+}
+
+.step li.skip {
+    border-left: 5px solid #cccccc;
+}
+
+.step.context li {
+    border: 1px dashed #cccccc;
+}
+
+#specificationContainer h2 {
+    margin-bottom: 10px;
+}
+
+.errored {
+    background-color: #ffda8b;
+}
+
+.context-step li {
+    font-style: italic;
+    border: 1px dashed #cccccc;
+}
+.execution-time {
+    margin: 10px 0 5px 0;
+    color: #999999;
+    font-style: italic;
+}
+.step-info {
+    margin-bottom: 1.5rem;
 }
 @media screen and (min-width: 1024px){
   .logo{
@@ -272,9 +435,9 @@ input, .clipboard-btn{
     top: 70px;
     bottom: 0px;
     left: 0px;
-    border-size: 5px;
+    border-width: 5px;
     top:100px;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   .filtersSearch{
     padding: 0px;
