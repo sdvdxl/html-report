@@ -30,6 +30,9 @@ body {
 h1,h2,h3,h4,h5,h6{
   margin: 10px 0;
 }
+pre{
+  overflow: visible;
+}
 .header{
   background: #ecc31c;
 }
@@ -193,7 +196,7 @@ input, .clipboard-btn{
   border-left: 5px solid #CCC;
 }
 
-.senarios .time{
+.spec-name .time{
   float: right;
 }
 .box{
