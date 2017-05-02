@@ -122,6 +122,7 @@ type spec struct {
 	Datatable               *table         `json:"datatable"`
 	BeforeSpecHookFailures  []*hookFailure `json:"beforeSpecHookFailures"`
 	AfterSpecHookFailures   []*hookFailure `json:"afterSpecHookFailures"`
+	ScenarioCount           int            `json:"ScenarioCount"`
 	PassedScenarioCount     int            `json:"passedScenarioCount"`
 	FailedScenarioCount     int            `json:"failedScenarioCount"`
 	SkippedScenarioCount    int            `json:"skippedScenarioCount"`
@@ -271,7 +272,7 @@ func readTemplates(themePath string) {
 		"getDirName":          filepath.Base,
 	}
 	var err error
-	parsedTemplates, err = template.New("Reports").Funcs(funcs).ParseGlob(filepath.Join(getAbsThemePath(themePath), "views", "/*"))
+	parsedTemplates, err = template.New("Reports").Funcs(funcs).ParseGlob(filepath.Join(getAbsThemePath(themePath), "views", "*.tmpl"))
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
